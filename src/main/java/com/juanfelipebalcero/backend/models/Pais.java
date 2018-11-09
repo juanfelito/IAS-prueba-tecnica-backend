@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "tont_paises")
@@ -21,7 +25,10 @@ public class Pais {
 
     private String dsnombre;
     
-    private Integer cdzona;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    @JoinColumn(name = "cdzona")
+    private Zona cdzona;
     
     @JsonIgnore
     @ManyToMany(mappedBy = "pais")
@@ -53,19 +60,11 @@ public class Pais {
 		this.dsnombre = dsnombre;
 	}
 	
-	public Integer getCdzona() {
+	public Zona getCdzona() {
 		return cdzona;
 	}
 
-	public void setCdzona(Integer cdzona) {
+	public void setCdzona(Zona cdzona) {
 		this.cdzona = cdzona;
-	}
-	
-	public List<Ave> getAves() {
-		return aves;
-	}
-
-	public void setAves(List<Ave> aves) {
-		this.aves = aves;
 	}
 }
